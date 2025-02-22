@@ -1,0 +1,55 @@
+#
+# Example Ubuntu Dockerfile
+#
+
+# Pull base image.
+FROM ubuntu:latest
+
+ARG NFDUMP_VERSION=1.7.3
+
+#Expose netflow port
+EXPOSE 9995/udp
+
+# Install.
+RUN apt-get update && apt-get install -y \
+  wget \
+  unzip \
+  man \
+  apt-utils \
+  dialog \
+  pkg-config \
+  libtool \
+  autoconf \
+  autogen \
+  bison \
+  byacc \
+  flex \
+  make \
+  libpcap-dev \
+  libbz2-dev &&
+  rm -rf /var/lib/apt/lists/*
+
+RUN cd /usr/src &&
+  wget https://github.com/phaag/nfdump/archive/refs/tags/v$NFDUMP_VERSION.tar.gz &&
+  tar xfz v$NFDUMP_VERSION.tar.gz &&
+  cd nfdump-$NFDUMP_VERSION &&
+  ./autogen.sh &&
+  ./configure --enable-nfpcapd --enable-maxmind --enable-sflow &&
+  make &&
+  make install
+
+RUN ldconfig
+
+# Add files.
+#ADD root/.bashrc /root/.bashrc
+#ADD root/.gitconfig /root/.gitconfig
+#ADD root/.scripts /root/.scripts
+
+# Set environment variables.
+#ENV HOME /root
+
+# Define working directory.
+WORKDIR /usr/src
+
+# Define default command.
+CMD ["bash"]

@@ -1,0 +1,75 @@
+#
+# Copyright (c) 2025, Peter Haag
+# Sample nfdump config file 
+
+[nfdump]
+# format definitions
+
+# pre-defined format, hard coded into nfdump
+# uncomment to redefine according your needs
+#
+# fmt.line = "%ts %td %pr %sap -> %dap %pkt %byt %fl"
+# fmt.gline = "%ts %td %pr %gsap -> %gdap %pkt %byt %fl"
+# fmt.long = "%ts %td %pr %sap -> %dap %flg %tos %pkt %byt %fl"
+# fmt.glong = "%ts %td %pr %gsap -> %gdap %flg %tos %pkt %byt %fl"
+# fmt.extended = "%ts %td %pr %sap -> %dap %flg %tos %pkt %byt %pps %bps %bpp %fl"
+# fmt.biline = "%ts %td %pr %sap <-> %dap %opkt %ipkt %obyt %ibyt %fl"
+# fmt.bilong = "%ts %td %pr %sap <-> %dap %flg %tos %opkt %ipkt %obyt %ibyt %fl"
+
+# if compiled for nsel/nel support
+# fmt.nsel = "%ts %evt %xevt %pr %sap -> %dap %xsap -> %xdap %ibyt %obyt"
+# fmt.nel = "%ts %nevt %pr %sap -> %dap %nsap -> %ndap"
+
+# define any new format
+# fmt.newformat = "%ts ...."
+fmt.geolong = "%ts %td %pr %sc %gsap -> %dc %gdap %flg %pkt %byt %fl"
+
+# print long format with tor exit info
+fmt.tor = "%ts %td %pr %gsap %stor -> %gdap %dtor %flg %pkt %byt %fl"
+
+# Nokia NAT
+fmt.nokia = "%ts %te %flid %pr %sap -> %dap %isid %osid %nats"
+
+# default csv format
+csv.cvsline = "%ts,%td,%pr,%sa,%sp,%da,%dp,%pkt,%byt,%fl"
+
+# OpenBSD pf logs
+fmt.pflog = "%ts %pfact %pfrea  %pfdir on %pfifn %pfrule  %pr %sap -> %dap %pkt %byt"
+
+# geodb
+# if you use maxmind DB to geo-locate IPs - see geolookup(1)
+# geodb.path = "/var/db/mmdb.nf"
+
+# tordb
+# if you use tor DB to identify tor exit node IPs - see torlookup(1)
+# tordb.path = "/var/db/tordb.nf"
+
+# MAXWORKERS
+# By default the number of writer threads is set to the number of cores online but not 
+# more than 16 threads to be polite to other processes. If you want to use more than
+# 16 cores on a beefy machine, change maxworkers.
+# maxworkers = 16
+
+[nfcapd]
+# define multiple netflow exporters
+# the identification string follow the token 'exporter'
+# 
+# exporter.<ident> = ["ip", "flowdir"]
+# 
+# exporter.upstream = ["192.168.1.1", "/var/nflow/upstream"]
+# exporter.peer = ["192.168.1.10", "/var/nflow/peer"]
+
+# MAXWORKERS
+# see maxworkers in section [nfdump]
+# maxworkers = 16
+
+[sfcapd]
+# define -o options
+# enable option tun, if you want to decode tunneling protocols gre and 6in4
+# opt.tun = 1
+# maxworkers = 16
+
+[nfpcapd]
+# define -o options
+# opt.fat = 1
+# opt.payload = 1
